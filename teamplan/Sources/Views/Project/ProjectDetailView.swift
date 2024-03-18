@@ -42,8 +42,7 @@ struct ProjectDetailView: View {
         }
 //        .navigationTitle("\(projectViewModel.projects[index].name)")
         .onAppear {
-//            print("\(projectViewModel.projects[safe: index]?.toDos.count)")
-            print("테스트: \(projectViewModel.projects[index].toDos)")
+
         }
     }
 }
@@ -122,7 +121,7 @@ extension ProjectDetailView {
     
     private var contents: some View {
         ZStack{
-            if projectViewModel.projects[index].toDos.count > 1 {
+            if projectViewModel.userProjects[0].finishedTodo > 1 {
                 ScrollView {
                     Spacer()
                         .frame(height: 25)
@@ -130,9 +129,9 @@ extension ProjectDetailView {
                         if isShowAddToDo {
                             AddingToDoView()
                         }
-                        ForEach(Array(projectViewModel.projects[index].toDos.enumerated()), id: \.1.id) { index, toDo in
-                            ToDoView(toDo: toDo)
-                        }
+//                        ForEach(Array(projectViewModel.projects[index].toDos.enumerated()), id: \.1.id) { index, toDo in
+//                            ToDoView(toDo: toDo)
+//                        }
                     }
                 }
             } else {

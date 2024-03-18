@@ -150,8 +150,8 @@ extension ProjectMainView {
                 Spacer()
             }
             .frame(width: width * 2)
-            .background(Color.white)
-            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+            .background(Gen.Colors.whiteColor.swiftUIColor)
+            .shadow(color: Gen.Colors.whiteColor.swiftUIColor.opacity(0.2), radius: 5, x: 0, y: 2)
 
 
             Spacer()
@@ -170,8 +170,8 @@ extension ProjectMainView {
                 }
             }
             .frame(width: width)
-            .background(Color.white)
-            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+            .background(Gen.Colors.whiteColor.swiftUIColor)
+            .shadow(color: Gen.Colors.blackColor.swiftUIColor.opacity(0.2), radius: 5, x: 0, y: 2)
             .padding(.leading, 7)
             
 
@@ -182,7 +182,7 @@ extension ProjectMainView {
     private var projectsArea: some View {
         VStack {
             VStack {
-                ForEach(Array(projectViewModel.projects.enumerated()), id: \.1.id) { index, project in
+                ForEach(Array(projectViewModel.userProjects.enumerated()), id: \.1.id) { index, project in
                     ProjectCardView(project: project)
                         .onTapGesture {
                             projectDetailViewIndex = index
@@ -190,6 +190,7 @@ extension ProjectMainView {
                             print("Index: \(index)")
                         }
                 }
+               
             }
         }
     }

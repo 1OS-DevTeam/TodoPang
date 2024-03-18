@@ -10,8 +10,9 @@ import SwiftUI
 
 struct ProjectView: View {
     
+    @ObservedObject var projectViewModel = ProjectViewModel()
     @State private var isNotificationViewActive = false
-    private var isEmpty = false
+    @State private var isProjectEmpty = false
     
     var body: some View {
         NavigationStack {
@@ -19,12 +20,15 @@ struct ProjectView: View {
                 .padding(.bottom, 20)
             Spacer()
             ZStack {
-                if isEmpty {
+                if projectViewModel.isProjectEmpty {
                     ProjectEmptyView()
                 } else {
                     ProjectMainView()
                 }
             }
+        }
+        .onAppear {
+            projectViewModel.getProjectsInfo()
         }
     }
 }

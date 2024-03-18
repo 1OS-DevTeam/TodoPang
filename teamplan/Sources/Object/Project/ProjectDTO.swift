@@ -164,6 +164,7 @@ struct ProjectCardDTO{
     //--------------------
     // content
     //--------------------
+    let id = UUID().uuidString
     let title: String
     let startedAt: Date
     let deadline: Date

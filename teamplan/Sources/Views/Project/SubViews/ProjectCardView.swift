@@ -10,19 +10,19 @@ import SwiftUI
 
 struct ProjectCardView: View {
     
-    let project: ProjectModel
+    let project: ProjectCardDTO
     var body: some View {
         VStack {
             Spacer()
                 .frame(height: 18)
             HStack {
                 VStack(alignment: .leading) {
-                    Text(project.name)
+                    Text(project.title)
                         .font(.appleSDGothicNeo(.bold, size: 17))
                         .foregroundColor(.theme.blackColor)
 
                     HStack {
-                        Text("\(project.toDos.count)개의 투두")
+                        Text("\((project.registedTodo - project.registedTodo))개의 투두")
                             .font(.appleSDGothicNeo(.semiBold, size: 12))
                             .foregroundColor(.theme.darkGreyColor)
                         Text("가 남아있어요")
@@ -77,7 +77,7 @@ struct ProjectCardView: View {
                 
                 HStack {
                     Spacer()
-                    Text("D-\(project.endDate)")
+                    Text("D-\(project.deadline)")
                         .font(.appleSDGothicNeo(.regular, size: 12))
                         .foregroundColor(.theme.blackColor)
                 }
