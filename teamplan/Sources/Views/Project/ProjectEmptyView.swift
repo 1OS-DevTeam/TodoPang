@@ -9,6 +9,9 @@
 import SwiftUI
 
 struct ProjectEmptyView: View {
+    
+    @ObservedObject var projectViewModel: ProjectViewModel
+    
     var body: some View {
         VStack {
             
@@ -59,9 +62,9 @@ struct ProjectEmptyView: View {
     }
 }
 
-struct ProjectEmptyView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProjectEmptyView()
-    }
-}
+//struct ProjectEmptyView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProjectEmptyView()
+//    }
+//}
 

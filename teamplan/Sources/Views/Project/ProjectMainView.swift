@@ -14,7 +14,7 @@ enum ProjectViewType {
 
 struct ProjectMainView: View {
     
-    @StateObject var projectViewModel = ProjectViewModel()
+    @ObservedObject var projectViewModel: ProjectViewModel
     
     @State private var isAddProjectViewActive = false
     @State private var isPushProjectDetailView = false
@@ -56,11 +56,11 @@ struct ProjectMainView: View {
     }
 }
 
-struct ProjectMainView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProjectMainView()
-    }
-}
+//struct ProjectMainView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProjectMainView()
+//    }
+//}
 
 
 extension ProjectMainView {
@@ -121,7 +121,7 @@ extension ProjectMainView {
                         .foregroundColor(.theme.blackColor)
                         .padding(.top, 11)
                     Spacer()
-                    Text("3")
+                    Text("\(projectViewModel.projectStatus?.registProject ?? 0)")
                         .font(.appleSDGothicNeo(.bold, size: 18))
                         .foregroundColor(.theme.mainPurpleColor)
                         .padding(.bottom, 14)
@@ -141,7 +141,7 @@ extension ProjectMainView {
                         .foregroundColor(.theme.blackColor)
                         .padding(.top, 11)
                     Spacer()
-                    Text("12")
+                    Text("\(projectViewModel.projectStatus?.completeProject ?? 0)")
                         .font(.appleSDGothicNeo(.bold, size: 18))
                         .foregroundColor(.theme.mainPurpleColor)
                         .padding(.bottom, 14)
@@ -163,7 +163,7 @@ extension ProjectMainView {
                         .foregroundColor(.theme.blackColor)
                         .padding(.top, 11)
                     Spacer()
-                    Text("10")
+                    Text("\(projectViewModel.projectStatus?.waterDrop ?? 0)")
                         .font(.appleSDGothicNeo(.bold, size: 18))
                         .foregroundColor(.theme.mainBlueColor)
                         .padding(.bottom, 14)

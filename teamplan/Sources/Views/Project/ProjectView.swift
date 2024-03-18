@@ -21,9 +21,9 @@ struct ProjectView: View {
             Spacer()
             ZStack {
                 if projectViewModel.isProjectEmpty {
-                    ProjectEmptyView()
+                    ProjectEmptyView(projectViewModel: projectViewModel)
                 } else {
-                    ProjectMainView()
+                    ProjectMainView(projectViewModel: projectViewModel)
                 }
             }
         }
