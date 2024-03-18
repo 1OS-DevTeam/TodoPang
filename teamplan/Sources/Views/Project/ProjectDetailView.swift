@@ -12,6 +12,8 @@ struct ProjectDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var projectViewModel: ProjectViewModel
+    
+    @State private var isShowAddToDo: Bool = false
     let index: Int
     
     var body: some View {
@@ -109,7 +111,7 @@ extension ProjectDetailView {
                 )
                 .offset(x: 0)
                 .onTapGesture {
-
+                    self.addToDo()
                 }
             }
         }
@@ -125,6 +127,9 @@ extension ProjectDetailView {
                     Spacer()
                         .frame(height: 25)
                     VStack(spacing: 8) {
+                        if isShowAddToDo {
+                            AddingToDoView()
+                        }
                         ForEach(Array(projectViewModel.projects[index].toDos.enumerated()), id: \.1.id) { index, toDo in
                             ToDoView(toDo: toDo)
                         }
@@ -190,6 +195,14 @@ extension ProjectDetailView {
                 .onTapGesture {
                     print("프로젝트 완료")
                 }
+        }
+    }
+}
+
+extension ProjectDetailView {
+    private func addToDo() {
+        withAnimation(.spring()) {
+            self.isShowAddToDo = true
         }
     }
 }
