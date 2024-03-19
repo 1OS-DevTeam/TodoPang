@@ -49,7 +49,7 @@ struct ProjectMainView: View {
             }
             .padding(.horizontal, 16)
             .sheet(isPresented: $isAddProjectViewActive) {
-                AddProjectView()
+                AddProjectView(projectViewModel: projectViewModel)
             }
         }
 

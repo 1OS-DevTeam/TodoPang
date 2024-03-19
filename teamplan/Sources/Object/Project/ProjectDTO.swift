@@ -101,9 +101,9 @@ struct ProjectSetDTO{
     //--------------------
     // content
     //--------------------
-    let title: String
-    let startedAt: Date
-    let deadline: Date
+    var title: String
+    var startedAt: Date
+    var deadline: Date
     
     //--------------------
     // constructor

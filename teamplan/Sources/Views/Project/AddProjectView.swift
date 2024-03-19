@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 enum StartDateSelection {
     case none
@@ -28,12 +29,16 @@ enum DurationSelection {
 
 struct AddProjectView: View {
     
+    @ObservedObject var projectViewModel: ProjectViewModel
+    
     @Environment(\.dismiss) var dismiss
     
-    @State var projectName: String = ""
-    @State var startDate: StartDateSelection = .none
-    @State var duration: DurationSelection = .none
+    @State var isValidate: Bool = false
     
+    var projectInfo = ProjectSetDTO(title: "",
+                                    startedAt: Date(),
+                                    deadline: Date())
+
     var body: some View {
         VStack {
             
@@ -60,14 +65,17 @@ struct AddProjectView: View {
             bottomButtonArea
 
         }
+        .onReceive(Publishers.CombineLatest3(projectViewModel.$projectName, projectViewModel.$startDate, projectViewModel.$duration)) { _ in
+             checkValidationAddButton()
+         }
     }
 }
 
-struct AddProjectView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddProjectView()
-    }
-}
+//struct AddProjectView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddProjectView()
+//    }
+//}
 
 extension AddProjectView {
     private var navigationArea: some View {
@@ -88,9 +96,6 @@ extension AddProjectView {
             
             // 타이틀을 가운데 정렬하기 위한 이미지
             Image(systemName: "xmark")
-                .onTapGesture {
-                    dismiss.callAsFunction()
-                }
                 .hidden()
         }
         .frame(height: 60)
@@ -109,7 +114,7 @@ extension AddProjectView {
             }
             
             ZStack {
-                TextField("목표 이름을 설정해주세요", text: $projectName)
+                TextField("목표 이름을 설정해주세요", text: $projectViewModel.projectName)
                     .frame(height: 42)
                     .frame(maxWidth: .infinity)
                     .padding(.leading, 20)
@@ -137,16 +142,16 @@ extension AddProjectView {
             HStack {
                 ZStack {
                     Text("오늘")
-                        .foregroundColor(startDate == .today ? .white : Color(hex: "B3B3B3"))
+                        .foregroundColor(projectViewModel.startDate == .today ? .white : Color(hex: "B3B3B3"))
                         .frame(height: 42)
                         .frame(maxWidth: .infinity)
-                        .background(startDate == .today ? Color.theme.mainPurpleColor : .white)
+                        .background(projectViewModel.startDate == .today ? Color.theme.mainPurpleColor : .white)
                         .onTapGesture {
-                            self.startDate = .today
+                            projectViewModel.startDate = .today
                         }
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(Color(hex: "E2E2E2"), lineWidth: 1)
-                        .opacity(startDate == .today ? 0 : 1)
+                        .opacity(projectViewModel.startDate == .today ? 0 : 1)
                 }
                 .cornerRadius(24)
                 .frame(height: 42)
@@ -156,17 +161,17 @@ extension AddProjectView {
                 
                 ZStack {
                     Text("내일")
-                        .foregroundColor(startDate == .tomorrow ? .white : Color(hex: "B3B3B3"))
+                        .foregroundColor(projectViewModel.startDate == .tomorrow ? .white : Color(hex: "B3B3B3"))
                         .frame(height: 42)
                         .frame(maxWidth: .infinity)
                         .cornerRadius(24)
-                        .background(startDate == .tomorrow ? Color.theme.mainPurpleColor : .white)
+                        .background(projectViewModel.startDate == .tomorrow ? Color.theme.mainPurpleColor : .white)
                         .onTapGesture {
-                            self.startDate = .tomorrow
+                            projectViewModel.startDate = .tomorrow
                         }
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(Color(hex: "E2E2E2"), lineWidth: 1)
-                        .opacity(startDate == .tomorrow ? 0 : 1)
+                        .opacity(projectViewModel.startDate == .tomorrow ? 0 : 1)
                 }
                 .cornerRadius(24)
                 .frame(height: 42)
@@ -198,22 +203,22 @@ extension AddProjectView {
                         .foregroundColor(Color.theme.mainBlueColor)
                         .offset(y: 10)
                 }
-                .opacity(duration == .none ? 0 : 1)
+                .opacity(projectViewModel.duration == .none ? 0 : 1)
             }
             
             HStack {
                 ZStack {
                     Text("7일")
-                        .foregroundColor(duration == .one ? .white : Color(hex: "B3B3B3"))
+                        .foregroundColor(projectViewModel.duration == .one ? .white : Color(hex: "B3B3B3"))
                         .frame(height: 42)
                         .frame(maxWidth: .infinity)
-                        .background(duration == .one ? Color.theme.mainPurpleColor : .white)
+                        .background(projectViewModel.duration == .one ? Color.theme.mainPurpleColor : .white)
                         .onTapGesture {
-                            self.duration = .one
+                            projectViewModel.duration = .one
                         }
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(Color(hex: "E2E2E2"), lineWidth: 1)
-                        .opacity(duration == .one ? 0 : 1)
+                        .opacity(projectViewModel.duration == .one ? 0 : 1)
                 }
                 .cornerRadius(24)
                 .frame(height: 42)
@@ -223,17 +228,17 @@ extension AddProjectView {
                 
                 ZStack {
                     Text("14일")
-                        .foregroundColor(duration == .two ? .white : Color(hex: "B3B3B3"))
+                        .foregroundColor(projectViewModel.duration == .two ? .white : Color(hex: "B3B3B3"))
                         .frame(height: 42)
                         .frame(maxWidth: .infinity)
                         .cornerRadius(24)
-                        .background(duration == .two ? Color.theme.mainPurpleColor : .white)
+                        .background(projectViewModel.duration == .two ? Color.theme.mainPurpleColor : .white)
                         .onTapGesture {
-                            self.duration = .two
+                            projectViewModel.duration = .two
                         }
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(Color(hex: "E2E2E2"), lineWidth: 1)
-                        .opacity(duration == .two ? 0 : 1)
+                        .opacity(projectViewModel.duration == .two ? 0 : 1)
                 }
                 .cornerRadius(24)
                 .frame(height: 42)
@@ -243,17 +248,17 @@ extension AddProjectView {
                 
                 ZStack {
                     Text("21일")
-                        .foregroundColor(duration == .three ? .white : Color(hex: "B3B3B3"))
+                        .foregroundColor(projectViewModel.duration == .three ? .white : Color(hex: "B3B3B3"))
                         .frame(height: 42)
                         .frame(maxWidth: .infinity)
                         .cornerRadius(24)
-                        .background(duration == .three ? Color.theme.mainPurpleColor : .white)
+                        .background(projectViewModel.duration == .three ? Color.theme.mainPurpleColor : .white)
                         .onTapGesture {
-                            self.duration = .three
+                            projectViewModel.duration = .three
                         }
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(Color(hex: "E2E2E2"), lineWidth: 1)
-                        .opacity(duration == .three ? 0 : 1)
+                        .opacity(projectViewModel.duration == .three ? 0 : 1)
                 }
                 .cornerRadius(24)
                 .frame(height: 42)
@@ -267,19 +272,19 @@ extension AddProjectView {
 
                         Menu {
                             Button("4주", action: {
-                                self.duration = .fourth
+                                projectViewModel.duration = .fourth
                             })
                             Button("5주", action: {
-                                self.duration = .fifth
+                                projectViewModel.duration = .fifth
                             })
                             Button("6주", action: {
-                                self.duration = .sixth
+                                projectViewModel.duration = .sixth
                             })
                             Button("7주", action: {
-                                self.duration = .seventh
+                                projectViewModel.duration = .seventh
                             })
                             Button("8주", action: {
-                                self.duration = .eighth
+                                projectViewModel.duration = .eighth
                             })
                         } label: {
                             HStack {
@@ -317,19 +322,23 @@ extension AddProjectView {
             .foregroundColor(.white)
             .frame(height: 48)
             .frame(maxWidth: .infinity)
-            .background(Color.theme.greyColor)
+            .background(isValidate ? Color.theme.mainPurpleColor : Color.theme.greyColor)
             .cornerRadius(8)
             .padding(.horizontal, 16)
             .onTapGesture {
-                print("프로젝트 시작하기")
+                if self.isValidate == true {
+                    print("프로젝트 시작하기")
+                } else {
+                    
+                }
             }
     }
 
 }
 
 extension AddProjectView {
-    func showSelectionButtonText() -> String {
-        switch duration {
+    private func showSelectionButtonText() -> String {
+        switch projectViewModel.duration {
         case .none, .one, .two, .three:
             return "선택"
         case .fourth:
@@ -346,12 +355,16 @@ extension AddProjectView {
         }
     }
     
-    func isSelected4Weeks() -> Bool {
-        switch duration {
+    private func isSelected4Weeks() -> Bool {
+        switch projectViewModel.duration {
         case .none, .one, .two, .three:
             return false
         default:
             return true
         }
+    }
+    
+    private func checkValidationAddButton() {
+        isValidate = !projectViewModel.projectName.isEmpty && projectViewModel.startDate != .none && projectViewModel.duration != .none
     }
 }

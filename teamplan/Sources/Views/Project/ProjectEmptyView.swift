@@ -59,7 +59,7 @@ struct ProjectEmptyView: View {
                 self.isAddProjectViewActive.toggle()
             }
             .sheet(isPresented: $isAddProjectViewActive) {
-                AddProjectView()
+                AddProjectView(projectViewModel: projectViewModel)
             }
             
             Spacer()

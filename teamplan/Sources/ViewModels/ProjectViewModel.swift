@@ -15,6 +15,11 @@ final class ProjectViewModel: ObservableObject {
     @Published var projectStatus: userStatProjectDTO?
     @Published var userProjects: [ProjectCardDTO] = []
     @Published var isProjectEmpty: Bool = true
+    
+    // AddProjectView에 필요한 프로퍼티
+    @Published var projectName: String = ""
+    @Published var startDate: StartDateSelection = .none
+    @Published var duration: DurationSelection = .none
 
     let identifier: String
     lazy var projectService = ProjectIndexService(with: self.identifier)
