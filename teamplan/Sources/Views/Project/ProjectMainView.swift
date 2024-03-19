@@ -187,7 +187,6 @@ extension ProjectMainView {
                         .onTapGesture {
                             projectDetailViewIndex = index
                             isPushProjectDetailView.toggle()
-                            print("Index: \(index)")
                         }
                 }
                
