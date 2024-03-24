@@ -10,8 +10,11 @@ import SwiftUI
 
 struct AddingToDoView: View {
     
-    @State private var text: String = ""
+    @State private var toDo: String = ""
     @State private var isEditing: Bool = false
+    let projectId: Int
+    
+    @EnvironmentObject var projectViewModel: ProjectViewModel
     
     var body: some View {
         HStack {
@@ -21,9 +24,14 @@ struct AddingToDoView: View {
                         print("toggle")
                     }
                 ZStack {
-                    TextField("할 일은 삭제가 불가능하지만 수정은 가능해요", text: $text) { editing in
+                    TextField("할 일은 삭제가 불가능하지만 수정은 가능해요", text: $toDo) { editing in
                         self.isEditing = editing
                     }
+                    .onSubmit {
+                        let todo = TodoSetDTO(projectId: projectId, todoId: UUID().hashValue, userId: projectViewModel.identifier, desc: toDo)
+                        projectViewModel.addNewTodo(projectId: projectId, Todo: todo)
+                    }
+                    
                     .padding(.horizontal, 16)
                     .font(.appleSDGothicNeo(.regular, size: 14))
                     
@@ -41,5 +49,5 @@ struct AddingToDoView: View {
 }
 
 #Preview {
-    AddingToDoView()
+    AddingToDoView(projectId: 1)
 }

@@ -14,6 +14,7 @@ struct ProjectDetailView: View {
     @EnvironmentObject var projectViewModel: ProjectViewModel
     
     @State private var isShowAddToDo: Bool = false
+    @State private var isShowEmptyView: Bool = true
     let index: Int
     
     var body: some View {
@@ -42,7 +43,7 @@ struct ProjectDetailView: View {
         }
 //        .navigationTitle("\(projectViewModel.projects[index].name)")
         .onAppear {
-
+            isShowEmptyView = projectViewModel.userProjects[index].registedTodo == 0
         }
     }
 }
@@ -121,13 +122,14 @@ extension ProjectDetailView {
     
     private var contents: some View {
         ZStack{
-            if projectViewModel.userProjects[0].finishedTodo > 1 {
+            if !isShowEmptyView {
                 ScrollView {
                     Spacer()
                         .frame(height: 25)
                     VStack(spacing: 8) {
                         if isShowAddToDo {
-                            AddingToDoView()
+                            let projectId = Int(projectViewModel.userProjects[index].id) ?? 0
+                            AddingToDoView(projectId: projectId)
                         }
 //                        ForEach(Array(projectViewModel.projects[index].toDos.enumerated()), id: \.1.id) { index, toDo in
 //                            ToDoView(toDo: toDo)
@@ -202,6 +204,7 @@ extension ProjectDetailView {
     private func addToDo() {
         withAnimation(.spring()) {
             self.isShowAddToDo = true
+            self.isShowEmptyView = false
         }
     }
 }

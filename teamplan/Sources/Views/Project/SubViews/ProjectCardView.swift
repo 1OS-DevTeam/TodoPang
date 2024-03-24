@@ -22,7 +22,7 @@ struct ProjectCardView: View {
                         .foregroundColor(.theme.blackColor)
 
                     HStack {
-                        Text("\((project.registedTodo - project.registedTodo))개의 투두")
+                        Text("\((project.registedTodo - project.finishedTodo))개의 투두")
                             .font(.appleSDGothicNeo(.semiBold, size: 12))
                             .foregroundColor(.theme.darkGreyColor)
                         Text("가 남아있어요")

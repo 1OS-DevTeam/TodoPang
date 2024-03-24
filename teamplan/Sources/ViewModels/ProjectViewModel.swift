@@ -33,6 +33,7 @@ final class ProjectViewModel: ObservableObject {
         Task {
             await self.getUserName()
         }
+        try? projectService.readyService()
     }
     
     func getProjectsInfo() {
@@ -45,7 +46,7 @@ final class ProjectViewModel: ObservableObject {
         self.$userProjects
             .receive(on: DispatchQueue.main)
             .sink { [weak self] projects in
-                self?.isProjectEmpty = projects.count <= 1
+                self?.isProjectEmpty = projects.isEmpty
             }
             .store(in: &cancellables)
         
@@ -61,6 +62,12 @@ final class ProjectViewModel: ObservableObject {
         self.startDate = .none
         self.duration = .none
         self.projectName = ""
+    }
+    
+    func addNewTodo(projectId: Int, Todo: TodoSetDTO) {
+        print(#function)
+        let service = ProjectDetailService(userId: identifier, projectId: projectId)
+        try? service.setTodo(with: Todo)
     }
     
     @MainActor
