@@ -28,7 +28,9 @@ struct AddingToDoView: View {
                         self.isEditing = editing
                     }
                     .onSubmit {
-                        let todo = TodoSetDTO(projectId: projectId, todoId: UUID().hashValue, userId: projectViewModel.identifier, desc: toDo)
+                        let randomInt32 = Int32.random(in: Int32.min...Int32.max)
+                        let todoId = Int(randomInt32)
+                        let todo = TodoSetDTO(projectId: projectId, todoId: todoId, userId: projectViewModel.identifier, desc: toDo)
                         projectViewModel.addNewTodo(projectId: projectId, Todo: todo)
                     }
                     

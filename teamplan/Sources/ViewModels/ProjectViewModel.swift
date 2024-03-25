@@ -65,9 +65,13 @@ final class ProjectViewModel: ObservableObject {
     }
     
     func addNewTodo(projectId: Int, Todo: TodoSetDTO) {
-        print(#function)
         let service = ProjectDetailService(userId: identifier, projectId: projectId)
         try? service.setTodo(with: Todo)
+    }
+    
+    func getTodo(projectId: Int) -> [TodoListDTO]? {
+        let service = ProjectDetailService(userId: identifier, projectId: projectId)
+        return try? service.getTodoList()
     }
     
     @MainActor

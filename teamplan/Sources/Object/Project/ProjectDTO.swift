@@ -164,7 +164,7 @@ struct ProjectCardDTO{
     //--------------------
     // content
     //--------------------
-    let id = UUID().uuidString
+    let id: Int
     let title: String
     let startedAt: Date
     let deadline: Date
@@ -184,6 +184,7 @@ struct ProjectCardDTO{
             return nil
         }
         // Assign Value
+        self.id = Int(entity.proj_id)
         self.title = title
         self.startedAt = startedAt
         self.deadline = deadline

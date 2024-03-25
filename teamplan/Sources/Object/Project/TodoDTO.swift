@@ -107,8 +107,8 @@ struct TodoUpdateDTO{
 //============================
 // MARK: toViewModel
 //============================
-struct TodoListDTO{
-    
+struct TodoListDTO: Identifiable {
+    let id = UUID().uuidString
     //--------------------
     // Content
     //--------------------

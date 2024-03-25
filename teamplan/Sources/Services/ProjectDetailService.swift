@@ -40,6 +40,7 @@ final class ProjectDetailService{
         self.projectId = projectId
         self.projectDetail = ProjectDetailDTO()
         self.statDTO = StatTodoDTO()
+        try? readyService()
     }
     
     //TODO: Struct Daily Reset Todo Logic
@@ -152,10 +153,16 @@ extension ProjectDetailService{
     // Set: Core
     private func setCoreFunction(with dto: TodoSetDTO) throws {
         // 1. Add to Coredata
-        let newTodo = try todoCD.setTodo(with: dto)
+        do {
+            let newTodo = try todoCD.setTodo(with: dto)
+            todoList.append(newTodo)
+        } catch {
+            print("error: \(error)")
+        }
+
         
         // 2, Append Todo List
-        todoList.append(newTodo)
+
     }
     // Set: CleanUp
     private func setCleanupFunction() throws {
@@ -207,7 +214,7 @@ extension ProjectDetailService{
     
     // Check: Nil
     private func isProjectDetailEmpty() throws {
-        if projectDetail.userId == "" || projectDetail.projectId == 0 {
+        if self.userId == "" || self.projectId == 0 {
             throw ProjectDetailError.UnexpectedInitializeError
         }
     }

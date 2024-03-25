@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23C71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23D60" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AccessLogEntity" representedClassName="AccessLogEntity" syncable="YES" codeGenerationType="class">
         <attribute name="log_access" optional="YES" attributeType="String"/>
         <attribute name="log_id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
@@ -41,7 +41,7 @@
         <attribute name="proj_changed_at" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="proj_deadline" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="proj_finished" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="proj_finished_at" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="proj_finished_at" attributeType="String"/>
         <attribute name="proj_id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="proj_registed_at" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="proj_started_at" attributeType="Date" usesScalarValueType="NO"/>

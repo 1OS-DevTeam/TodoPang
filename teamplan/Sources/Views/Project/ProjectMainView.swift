@@ -183,6 +183,9 @@ extension ProjectMainView {
         VStack {
             VStack {
                 ForEach(Array(projectViewModel.userProjects.enumerated()), id: \.1.id) { index, project in
+                    let projectId = Int(project.id)
+                    let service = ProjectDetailService(userId: projectViewModel.identifier, projectId: projectId)
+                    let projectDetail = service.projectDetail
                     ProjectCardView(project: project)
                         .onTapGesture {
                             projectDetailViewIndex = index

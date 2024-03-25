@@ -15,6 +15,7 @@ struct ProjectDetailView: View {
     
     @State private var isShowAddToDo: Bool = false
     @State private var isShowEmptyView: Bool = true
+    @State private var todo: [TodoListDTO]?
     let index: Int
     
     var body: some View {
@@ -44,6 +45,8 @@ struct ProjectDetailView: View {
 //        .navigationTitle("\(projectViewModel.projects[index].name)")
         .onAppear {
             isShowEmptyView = projectViewModel.userProjects[index].registedTodo == 0
+            self.getToDo()
+            print(projectViewModel.userProjects[index].id)
         }
     }
 }
@@ -131,9 +134,12 @@ extension ProjectDetailView {
                             let projectId = Int(projectViewModel.userProjects[index].id) ?? 0
                             AddingToDoView(projectId: projectId)
                         }
-//                        ForEach(Array(projectViewModel.projects[index].toDos.enumerated()), id: \.1.id) { index, toDo in
-//                            ToDoView(toDo: toDo)
-//                        }
+                        if let todo = todo {
+                            ForEach(todo) { toDo in
+                                ToDoView(toDo: toDo)
+                            }
+                        }
+
                     }
                 }
             } else {
@@ -206,5 +212,11 @@ extension ProjectDetailView {
             self.isShowAddToDo = true
             self.isShowEmptyView = false
         }
+    }
+    
+    private func getToDo() {
+        print(#function)
+        let projectId = projectViewModel.userProjects[index].id
+        self.todo = projectViewModel.getTodo(projectId: projectId)
     }
 }
