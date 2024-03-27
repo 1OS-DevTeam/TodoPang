@@ -91,6 +91,14 @@ extension Date {
         formatter.dateFormat = "yy.MM.dd"
         formatter.locale = .korea
         let string = formatter.string(from: self)
+        return string
+    }
+    
+    /// yy.MM.dd
+    var fullCheckDay2: String {
+        formatter.dateFormat = "yy.MM.dd"
+        formatter.locale = .korea
+        let string = formatter.string(from: self)
         return string + " (\(week()))"
     }
 

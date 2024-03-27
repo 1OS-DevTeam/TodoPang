@@ -30,7 +30,7 @@ struct ProjectDetailView: View {
             button
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("막걸리 브랜딩어쩌구")
+        .navigationTitle(projectViewModel.userProjects[index].title)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
 
@@ -42,11 +42,9 @@ struct ProjectDetailView: View {
                 }
             }
         }
-//        .navigationTitle("\(projectViewModel.projects[index].name)")
         .onAppear {
             isShowEmptyView = projectViewModel.userProjects[index].registedTodo == 0
             self.getToDo()
-            print(projectViewModel.userProjects[index].id)
         }
     }
 }
@@ -61,21 +59,21 @@ extension ProjectDetailView {
     private var header: some View {
         ZStack{
             VStack(alignment: .leading) {
-                Text("D-14")
+                Text("D-\(projectViewModel.userProjects[index].deadline.days(from: Date()))")
                     .foregroundColor(Color.theme.mainPurpleColor)
                     .font(.appleSDGothicNeo(.bold, size: 24))
                     .padding(.bottom, 5)
                 
                 HStack {
-                    Text("23.08.12")
+                    Text("\(projectViewModel.userProjects[index].startedAt.fullCheckDay)")
                     Text("~")
-                    Text("23.08.26")
+                    Text("\(projectViewModel.userProjects[index].deadline.fullCheckDay)")
                 }
                 .foregroundColor(Color.theme.mainBlueColor)
                 .font(.appleSDGothicNeo(.regular, size: 12))
      
                 HStack {
-                    Text("할 일을 추가해주세요!")
+                    Text(showRemainTodo())
                         .font(.appleSDGothicNeo(.bold, size: 17))
                         .foregroundColor(.theme.darkGreyColor)
                         .background(
@@ -131,7 +129,7 @@ extension ProjectDetailView {
                         .frame(height: 25)
                     VStack(spacing: 8) {
                         if isShowAddToDo {
-                            let projectId = Int(projectViewModel.userProjects[index].id) ?? 0
+                            let projectId = Int(projectViewModel.userProjects[index].id)
                             AddingToDoView(projectId: projectId)
                         }
                         if let todo = todo {
@@ -217,5 +215,14 @@ extension ProjectDetailView {
     private func getToDo() {
         let projectId = projectViewModel.userProjects[index].id
         self.todo = projectViewModel.getTodo(projectId: projectId)
+    }
+    
+    private func showRemainTodo() -> String {
+        
+        if isShowEmptyView {
+            return "할 일을 추가해주세요!"
+        } else {
+            return "\(self.todo?.count ?? 0)개의 할 일이 있어요"
+        }
     }
 }
