@@ -215,7 +215,6 @@ extension ProjectDetailView {
     }
     
     private func getToDo() {
-        print(#function)
         let projectId = projectViewModel.userProjects[index].id
         self.todo = projectViewModel.getTodo(projectId: projectId)
     }

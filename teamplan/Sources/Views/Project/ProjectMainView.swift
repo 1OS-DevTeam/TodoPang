@@ -79,7 +79,7 @@ extension ProjectMainView {
                     Spacer()
                 }
                 HStack {
-                    Text("3개의 프로젝트가 있어요")
+                    Text("\(projectViewModel.projectStatus?.registProject ?? 0)개의 프로젝트가 있어요")
                         .font(.appleSDGothicNeo(.bold, size: 20))
                         .foregroundColor(.theme.blackColor)
                     Spacer()

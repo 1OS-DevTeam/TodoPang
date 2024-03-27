@@ -67,17 +67,23 @@ struct ProjectCardView: View {
                         .fill(
                             Color.theme.mainPurpleColor
                         )
-                        .frame(width: 45, height: 8)
+                        .frame(width: calculateGraphWidth(
+                            remainingDays: project.deadline.days(from: Date()),
+                            totalDays: project.deadline.days(from: project.startedAt)),
+                               height: 8)
 
                     
                     Image("project_bomb_smile")
-                        .offset(x: 22.5)
+                        .offset(x: calculateGraphWidth(
+                            remainingDays: project.deadline.days(from: Date()),
+                            totalDays: project.deadline.days(from: project.startedAt)) - 10
+                        )
                 }
 
                 
                 HStack {
                     Spacer()
-                    Text("D-\(project.deadline)")
+                    Text("D-\(project.deadline.days(from: Date()))")
                         .font(.appleSDGothicNeo(.regular, size: 12))
                         .foregroundColor(.theme.blackColor)
                 }
@@ -106,3 +112,13 @@ struct ProjectCardView: View {
 //            .previewLayout(.sizeThatFits)
 //    }
 //}
+
+extension ProjectCardView {
+    func calculateGraphWidth(remainingDays: Int, totalDays: Int) -> CGFloat {
+        
+        let barWidth = UIScreen.main.bounds.size.width - 32 - 40
+        let remainingDaysFloat = CGFloat(remainingDays)
+        let totalDaysFloat = CGFloat(totalDays)
+        return (remainingDaysFloat / totalDaysFloat) * barWidth
+    }
+}
