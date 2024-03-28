@@ -11,7 +11,7 @@ import SwiftUI
 struct ProjectDetailView: View {
     
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var projectViewModel: ProjectViewModel
+    @ObservedObject var projectViewModel: ProjectViewModel
     
     @State private var isShowAddToDo: Bool = false
     @State private var isShowEmptyView: Bool = true
@@ -49,11 +49,11 @@ struct ProjectDetailView: View {
     }
 }
 
-struct ProjectDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProjectDetailView(index: 0)
-    }
-}
+//struct ProjectDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProjectDetailView(index: 0)
+//    }
+//}
 
 extension ProjectDetailView {
     private var header: some View {
@@ -128,13 +128,13 @@ extension ProjectDetailView {
                     Spacer()
                         .frame(height: 25)
                     VStack(spacing: 8) {
+                        let projectId = Int(projectViewModel.userProjects[index].id)
                         if isShowAddToDo {
-                            let projectId = Int(projectViewModel.userProjects[index].id)
-                            AddingToDoView(projectId: projectId)
+                            AddingToDoView(projectId: projectId, projectViewModel: projectViewModel)
                         }
                         if let todo = todo {
                             ForEach(todo) { toDo in
-                                ToDoView(toDo: toDo)
+                                ToDoView(toDo: toDo, projectId: projectId, projectViewModel: projectViewModel)
                             }
                         }
 

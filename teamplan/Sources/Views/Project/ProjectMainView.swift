@@ -18,15 +18,14 @@ struct ProjectMainView: View {
     
     @State private var isAddProjectViewActive = false
     @State private var isPushProjectDetailView = false
-    
-    @State var path: [ProjectViewType] = []
+
     @State var projectDetailViewIndex = 0
     
     var body: some View {
         ScrollView {
             VStack {
                 NavigationLink(
-                    destination: ProjectDetailView(index: projectDetailViewIndex)
+                    destination: ProjectDetailView(projectViewModel: projectViewModel, index: projectDetailViewIndex)
                         .environmentObject(projectViewModel),
                     isActive: $isPushProjectDetailView) {
                     
@@ -50,6 +49,9 @@ struct ProjectMainView: View {
             .padding(.horizontal, 16)
             .sheet(isPresented: $isAddProjectViewActive) {
                 AddProjectView(projectViewModel: projectViewModel)
+            }
+            .onAppear {
+                projectViewModel.getProjectsInfo()
             }
         }
 

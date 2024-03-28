@@ -14,7 +14,7 @@ struct AddingToDoView: View {
     @State private var isEditing: Bool = false
     let projectId: Int
     
-    @EnvironmentObject var projectViewModel: ProjectViewModel
+    @ObservedObject var projectViewModel: ProjectViewModel
     
     var body: some View {
         HStack {
@@ -49,7 +49,7 @@ struct AddingToDoView: View {
         }
     }
 }
-
-#Preview {
-    AddingToDoView(projectId: 1)
-}
+//
+//#Preview {
+//    AddingToDoView(projectId: 1)
+//}

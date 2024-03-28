@@ -116,7 +116,7 @@ struct TodoListDTO: Identifiable {
     let desc: String
 
     let pinned: Bool
-    let status: Bool
+    var status: Bool
     
     //--------------------
     // Constructor

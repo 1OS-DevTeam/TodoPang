@@ -10,14 +10,20 @@ import SwiftUI
 
 struct ToDoView: View {
     
-    let toDo: TodoListDTO
+    @State var toDo: TodoListDTO
+    let projectId: Int
+    
+    @ObservedObject var projectViewModel: ProjectViewModel
     
     var body: some View {
         HStack {
             HStack {
                 Image(toDo.status ? "checkBox_done" : "checkBox_none")
                     .onTapGesture {
-                        print("toggle")
+                        self.toDo.status.toggle()
+                        projectViewModel.updateTodo(projectId: projectId,
+                                                    todoId: toDo.todoId, 
+                                                    newStatus: self.toDo.status)
                     }
                 ZStack {
                     HStack {

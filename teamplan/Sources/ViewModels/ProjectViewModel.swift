@@ -40,9 +40,6 @@ final class ProjectViewModel: ObservableObject {
         
         self.userProjects = try! projectService.getProjects()
         self.projectStatus = try! projectService.getStatistics()
-        print(self.userProjects)
-        print(self.projectStatus)
-        
         self.$userProjects
             .receive(on: DispatchQueue.main)
             .sink { [weak self] projects in
@@ -72,6 +69,15 @@ final class ProjectViewModel: ObservableObject {
     func getTodo(projectId: Int) -> [TodoListDTO]? {
         let service = ProjectDetailService(userId: identifier, projectId: projectId)
         return try? service.getTodoList()
+    }
+    
+    func updateTodo(projectId:Int ,todoId: Int, newStatus: Bool) {
+        let service = ProjectDetailService(userId: identifier, projectId: projectId)
+        do {
+            try service.updateTodoStatus(todoId: todoId, newStatus: newStatus)
+        } catch {
+            print("updateTodo error: \(error)")
+        }
     }
     
     @MainActor
