@@ -10,19 +10,19 @@ import SwiftUI
 
 struct ProjectCardView: View {
     
-    let project: ProjectModel
+    let project: ProjectCardDTO
     var body: some View {
         VStack {
             Spacer()
                 .frame(height: 18)
             HStack {
                 VStack(alignment: .leading) {
-                    Text(project.name)
+                    Text(project.title)
                         .font(.appleSDGothicNeo(.bold, size: 17))
                         .foregroundColor(.theme.blackColor)
 
                     HStack {
-                        Text("\(project.toDos.count)개의 투두")
+                        Text("\((project.registedTodo - project.finishedTodo))개의 투두")
                             .font(.appleSDGothicNeo(.semiBold, size: 12))
                             .foregroundColor(.theme.darkGreyColor)
                         Text("가 남아있어요")
@@ -67,17 +67,23 @@ struct ProjectCardView: View {
                         .fill(
                             Color.theme.mainPurpleColor
                         )
-                        .frame(width: 45, height: 8)
+                        .frame(width: calculateGraphWidth(
+                            remainingDays: project.deadline.days(from: Date()),
+                            totalDays: project.deadline.days(from: project.startedAt)),
+                               height: 8)
 
                     
                     Image("project_bomb_smile")
-                        .offset(x: 22.5)
+                        .offset(x: calculateGraphWidth(
+                            remainingDays: project.deadline.days(from: Date()),
+                            totalDays: project.deadline.days(from: project.startedAt)) - 10
+                        )
                 }
 
                 
                 HStack {
                     Spacer()
-                    Text("D-\(project.endDate)")
+                    Text("D-\(project.deadline.days(from: Date()))")
                         .font(.appleSDGothicNeo(.regular, size: 12))
                         .foregroundColor(.theme.blackColor)
                 }
@@ -106,3 +112,13 @@ struct ProjectCardView: View {
 //            .previewLayout(.sizeThatFits)
 //    }
 //}
+
+extension ProjectCardView {
+    func calculateGraphWidth(remainingDays: Int, totalDays: Int) -> CGFloat {
+        
+        let barWidth = UIScreen.main.bounds.size.width - 32 - 40
+        let remainingDaysFloat = CGFloat(remainingDays)
+        let totalDaysFloat = CGFloat(totalDays)
+        return (remainingDaysFloat / totalDaysFloat) * barWidth
+    }
+}

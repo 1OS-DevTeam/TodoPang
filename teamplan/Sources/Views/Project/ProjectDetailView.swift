@@ -11,7 +11,11 @@ import SwiftUI
 struct ProjectDetailView: View {
     
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var projectViewModel: ProjectViewModel
+    @ObservedObject var projectViewModel: ProjectViewModel
+    
+    @State private var isShowAddToDo: Bool = false
+    @State private var isShowEmptyView: Bool = true
+    @State private var todo: [TodoListDTO]?
     let index: Int
     
     var body: some View {
@@ -26,7 +30,7 @@ struct ProjectDetailView: View {
             button
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("막걸리 브랜딩어쩌구")
+        .navigationTitle(projectViewModel.userProjects[index].title)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
 
@@ -38,39 +42,38 @@ struct ProjectDetailView: View {
                 }
             }
         }
-//        .navigationTitle("\(projectViewModel.projects[index].name)")
         .onAppear {
-//            print("\(projectViewModel.projects[safe: index]?.toDos.count)")
-            print("테스트: \(projectViewModel.projects[index].toDos)")
+            isShowEmptyView = projectViewModel.userProjects[index].registedTodo == 0
+            self.getToDo()
         }
     }
 }
 
-struct ProjectDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProjectDetailView(index: 0)
-    }
-}
+//struct ProjectDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProjectDetailView(index: 0)
+//    }
+//}
 
 extension ProjectDetailView {
     private var header: some View {
         ZStack{
             VStack(alignment: .leading) {
-                Text("D-14")
+                Text("D-\(projectViewModel.userProjects[index].deadline.days(from: Date()))")
                     .foregroundColor(Color.theme.mainPurpleColor)
                     .font(.appleSDGothicNeo(.bold, size: 24))
                     .padding(.bottom, 5)
                 
                 HStack {
-                    Text("23.08.12")
+                    Text("\(projectViewModel.userProjects[index].startedAt.fullCheckDay)")
                     Text("~")
-                    Text("23.08.26")
+                    Text("\(projectViewModel.userProjects[index].deadline.fullCheckDay)")
                 }
                 .foregroundColor(Color.theme.mainBlueColor)
                 .font(.appleSDGothicNeo(.regular, size: 12))
      
                 HStack {
-                    Text("할 일을 추가해주세요!")
+                    Text(showRemainTodo())
                         .font(.appleSDGothicNeo(.bold, size: 17))
                         .foregroundColor(.theme.darkGreyColor)
                         .background(
@@ -109,7 +112,7 @@ extension ProjectDetailView {
                 )
                 .offset(x: 0)
                 .onTapGesture {
-
+                    self.addToDo()
                 }
             }
         }
@@ -120,14 +123,21 @@ extension ProjectDetailView {
     
     private var contents: some View {
         ZStack{
-            if projectViewModel.projects[index].toDos.count > 1 {
+            if !isShowEmptyView {
                 ScrollView {
                     Spacer()
                         .frame(height: 25)
                     VStack(spacing: 8) {
-                        ForEach(Array(projectViewModel.projects[index].toDos.enumerated()), id: \.1.id) { index, toDo in
-                            ToDoView(toDo: toDo)
+                        let projectId = Int(projectViewModel.userProjects[index].id)
+                        if isShowAddToDo {
+                            AddingToDoView(projectId: projectId, projectViewModel: projectViewModel)
                         }
+                        if let todo = todo {
+                            ForEach(todo) { toDo in
+                                ToDoView(toDo: toDo, projectId: projectId, projectViewModel: projectViewModel)
+                            }
+                        }
+
                     }
                 }
             } else {
@@ -190,6 +200,29 @@ extension ProjectDetailView {
                 .onTapGesture {
                     print("프로젝트 완료")
                 }
+        }
+    }
+}
+
+extension ProjectDetailView {
+    private func addToDo() {
+        withAnimation(.spring()) {
+            self.isShowAddToDo = true
+            self.isShowEmptyView = false
+        }
+    }
+    
+    private func getToDo() {
+        let projectId = projectViewModel.userProjects[index].id
+        self.todo = projectViewModel.getTodo(projectId: projectId)
+    }
+    
+    private func showRemainTodo() -> String {
+        
+        if isShowEmptyView {
+            return "할 일을 추가해주세요!"
+        } else {
+            return "\(self.todo?.count ?? 0)개의 할 일이 있어요"
         }
     }
 }

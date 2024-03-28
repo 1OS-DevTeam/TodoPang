@@ -101,9 +101,9 @@ struct ProjectSetDTO{
     //--------------------
     // content
     //--------------------
-    let title: String
-    let startedAt: Date
-    let deadline: Date
+    var title: String
+    var startedAt: Date
+    var deadline: Date
     
     //--------------------
     // constructor
@@ -164,6 +164,7 @@ struct ProjectCardDTO{
     //--------------------
     // content
     //--------------------
+    let id: Int
     let title: String
     let startedAt: Date
     let deadline: Date
@@ -183,6 +184,7 @@ struct ProjectCardDTO{
             return nil
         }
         // Assign Value
+        self.id = Int(entity.proj_id)
         self.title = title
         self.startedAt = startedAt
         self.deadline = deadline

@@ -107,8 +107,8 @@ struct TodoUpdateDTO{
 //============================
 // MARK: toViewModel
 //============================
-struct TodoListDTO{
-    
+struct TodoListDTO: Identifiable {
+    let id = UUID().uuidString
     //--------------------
     // Content
     //--------------------
@@ -116,7 +116,7 @@ struct TodoListDTO{
     let desc: String
 
     let pinned: Bool
-    let status: Bool
+    var status: Bool
     
     //--------------------
     // Constructor

@@ -9,6 +9,11 @@
 import SwiftUI
 
 struct ProjectEmptyView: View {
+    
+    @ObservedObject var projectViewModel: ProjectViewModel
+    
+    @State private var isAddProjectViewActive = false
+    
     var body: some View {
         VStack {
             
@@ -51,7 +56,10 @@ struct ProjectEmptyView: View {
                     .stroke(SwiftUI.Color.theme.mainPurpleColor, lineWidth: 1)
             )
             .onTapGesture {
-                print("프로젝트 생성하기")
+                self.isAddProjectViewActive.toggle()
+            }
+            .sheet(isPresented: $isAddProjectViewActive) {
+                AddProjectView(projectViewModel: projectViewModel)
             }
             
             Spacer()
@@ -59,9 +67,8 @@ struct ProjectEmptyView: View {
     }
 }
 
-struct ProjectEmptyView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProjectEmptyView()
-    }
-}
-
+//struct ProjectEmptyView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProjectEmptyView()
+//    }
+//}

@@ -14,19 +14,18 @@ enum ProjectViewType {
 
 struct ProjectMainView: View {
     
-    @StateObject var projectViewModel = ProjectViewModel()
+    @ObservedObject var projectViewModel: ProjectViewModel
     
     @State private var isAddProjectViewActive = false
     @State private var isPushProjectDetailView = false
-    
-    @State var path: [ProjectViewType] = []
+
     @State var projectDetailViewIndex = 0
     
     var body: some View {
         ScrollView {
             VStack {
                 NavigationLink(
-                    destination: ProjectDetailView(index: projectDetailViewIndex)
+                    destination: ProjectDetailView(projectViewModel: projectViewModel, index: projectDetailViewIndex)
                         .environmentObject(projectViewModel),
                     isActive: $isPushProjectDetailView) {
                     
@@ -49,18 +48,21 @@ struct ProjectMainView: View {
             }
             .padding(.horizontal, 16)
             .sheet(isPresented: $isAddProjectViewActive) {
-                AddProjectView()
+                AddProjectView(projectViewModel: projectViewModel)
+            }
+            .onAppear {
+                projectViewModel.getProjectsInfo()
             }
         }
 
     }
 }
 
-struct ProjectMainView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProjectMainView()
-    }
-}
+//struct ProjectMainView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProjectMainView()
+//    }
+//}
 
 
 extension ProjectMainView {
@@ -79,7 +81,7 @@ extension ProjectMainView {
                     Spacer()
                 }
                 HStack {
-                    Text("3개의 프로젝트가 있어요")
+                    Text("\(projectViewModel.projectStatus?.registProject ?? 0)개의 프로젝트가 있어요")
                         .font(.appleSDGothicNeo(.bold, size: 20))
                         .foregroundColor(.theme.blackColor)
                     Spacer()
@@ -121,7 +123,7 @@ extension ProjectMainView {
                         .foregroundColor(.theme.blackColor)
                         .padding(.top, 11)
                     Spacer()
-                    Text("3")
+                    Text("\(projectViewModel.projectStatus?.registProject ?? 0)")
                         .font(.appleSDGothicNeo(.bold, size: 18))
                         .foregroundColor(.theme.mainPurpleColor)
                         .padding(.bottom, 14)
@@ -141,7 +143,7 @@ extension ProjectMainView {
                         .foregroundColor(.theme.blackColor)
                         .padding(.top, 11)
                     Spacer()
-                    Text("12")
+                    Text("\(projectViewModel.projectStatus?.completeProject ?? 0)")
                         .font(.appleSDGothicNeo(.bold, size: 18))
                         .foregroundColor(.theme.mainPurpleColor)
                         .padding(.bottom, 14)
@@ -150,8 +152,8 @@ extension ProjectMainView {
                 Spacer()
             }
             .frame(width: width * 2)
-            .background(Color.white)
-            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+            .background(Gen.Colors.whiteColor.swiftUIColor)
+            .shadow(color: Gen.Colors.whiteColor.swiftUIColor.opacity(0.2), radius: 5, x: 0, y: 2)
 
 
             Spacer()
@@ -163,15 +165,15 @@ extension ProjectMainView {
                         .foregroundColor(.theme.blackColor)
                         .padding(.top, 11)
                     Spacer()
-                    Text("10")
+                    Text("\(projectViewModel.projectStatus?.waterDrop ?? 0)")
                         .font(.appleSDGothicNeo(.bold, size: 18))
                         .foregroundColor(.theme.mainBlueColor)
                         .padding(.bottom, 14)
                 }
             }
             .frame(width: width)
-            .background(Color.white)
-            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+            .background(Gen.Colors.whiteColor.swiftUIColor)
+            .shadow(color: Gen.Colors.blackColor.swiftUIColor.opacity(0.2), radius: 5, x: 0, y: 2)
             .padding(.leading, 7)
             
 
@@ -182,14 +184,17 @@ extension ProjectMainView {
     private var projectsArea: some View {
         VStack {
             VStack {
-                ForEach(Array(projectViewModel.projects.enumerated()), id: \.1.id) { index, project in
+                ForEach(Array(projectViewModel.userProjects.enumerated()), id: \.1.id) { index, project in
+                    let projectId = Int(project.id)
+                    let service = ProjectDetailService(userId: projectViewModel.identifier, projectId: projectId)
+                    let projectDetail = service.projectDetail
                     ProjectCardView(project: project)
                         .onTapGesture {
                             projectDetailViewIndex = index
                             isPushProjectDetailView.toggle()
-                            print("Index: \(index)")
                         }
                 }
+               
             }
         }
     }

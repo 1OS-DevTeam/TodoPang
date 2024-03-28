@@ -34,7 +34,7 @@ struct ProjectObject{
     // Maintenance
     let proj_registed_at: Date
     let proj_changed_at: Date
-    var proj_finished_at: Date?
+    var proj_finished_at: String
     
     //--------------------
     // Constructor
@@ -53,6 +53,7 @@ struct ProjectObject{
         self.proj_todo_finished = 0
         self.proj_registed_at = setDate
         self.proj_changed_at = setDate
+        self.proj_finished_at = ""
     }
     // CoreData
     init?(entity: ProjectEntity){
