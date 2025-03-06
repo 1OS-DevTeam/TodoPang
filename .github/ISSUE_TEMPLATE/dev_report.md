@@ -1,3 +1,12 @@
+---
+name: Develop Note
+about: Create a report to document develpment status
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 ## 제목
 => 20250306 DevNote
 
